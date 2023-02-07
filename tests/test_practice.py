@@ -1,6 +1,8 @@
+from selene import command
 from selene.support.shared import browser
 from utils.utils import delete_interrupt_elements, resource
 from selene import have
+
 
 def test_register_a_student(browser_management):
 
@@ -16,8 +18,10 @@ def test_register_a_student(browser_management):
 
     browser.element('#userEmail').type('torsukov@gmail.com')
 
-    male_gender = browser.element('label[for="gender-radio-1"]')
-    male_gender.click()
+    male = browser.element('label[for="gender-radio-2"]')
+    male.click()
+
+    browser.all('[name=gender]').element_by(have.value('Male')).perform(command.js.click)
 
     phone = browser.element('#userNumber')
     phone.type('89996666666')

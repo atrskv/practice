@@ -6,7 +6,7 @@ def delete_interrupt_elements():
     For delete google adds
     '''
 
-    browser.execute_script('document.querySelector(".Advertisement-Section").remove')
+    browser.driver.execute_script('document.querySelector(".Advertisement-Section").remove')
 
 
 def resource(path):
