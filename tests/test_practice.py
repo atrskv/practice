@@ -1,68 +1,208 @@
-from selene import command
-from selene.support.shared import browser
-from utils.utils import delete_interrupt_elements, resource
-from selene import have
+from practice.utils import utils
+from practice.model import app
+
+# from practice.model import controls
 
 
 def test_register_a_student(browser_management):
 
-    # GIVEN:
-    browser.open('/automation-practice-form')
+    (
+        app.
+        registration_form
+        .open()
+    )
 
-    delete_interrupt_elements()
 
-    # WHEN:
-    browser.element('#firstName').type('Aleksei')
+    utils.delete_interrupt_elements()
 
-    browser.element('#lastName').type('Torsukov')
 
-    browser.element('#userEmail').type('torsukov@gmail.com')
+    (
+        app.
+        registration_form
+        .set_name('Aleksei')
+    )
 
-    male = browser.element('label[for="gender-radio-2"]')
-    male.click()
+    (
+        app.registration_form
+        .set_lastname('Torsukov')
+    )
 
-    browser.all('[name=gender]').element_by(have.value('Male')).perform(command.js.click)
+    (
+        app
+        .registration_form
+        .set_email('torsukov@gmail.com')
+    )
 
-    phone = browser.element('#userNumber')
-    phone.type('89996666666')
+    (
+        app
+        .registration_form
+        .set_gender('Male')
+    )
 
-    calendar = browser.element('#dateOfBirthInput')
-    calendar.click()
+    (
+        app
+        .registration_form
+        .set_phone('8999123123')
+    )
 
-    browser.element('.react-datepicker__month-select').element('[value="0"]').click()
-    browser.element('.react-datepicker__year-select').element('[value="2000"]').click()
-    browser.element('.react-datepicker__day--019').click()
+    (
+        app
+        .registration_form
+        .set_bdate('13', '5', '2000')
+    )
 
-    subjects = browser.element('#subjectsInput')
-    subjects.type('Maths').press_tab()
+    (
+        app
+        .registration_form
+        .set_subjects('Math', 'Computer Science')
+    )
 
-    sport_hobbie = browser.element('[for="hobbies-checkbox-1"]')
-    sport_hobbie.click()
+    (
+        app
+        .registration_form
+        .set_hobbies('Sports', 'Music')
+    )
 
-    avatar = browser.element('#uploadPicture')
-    avatar.send_keys(resource('cat.jpeg'))
+    (
+        app
+        .registration_form
+        .set_avatar('cat.jpeg')
+    )
 
-    browser.element('#currentAddress').type('My address')
+    (
+        app
+        .registration_form
+        .set_address('My address')
+    )
 
-    browser.element('#state').click()
-    browser.element('#react-select-3-option-1').click()
+    (
+        app
+        .registration_form
+        .set_birthplace('Uttar Pradesh', 'Lucknow')
+    )
 
-    browser.element('#city').click()
-    browser.element('#react-select-4-option-1').click()
+    (
+        app
+        .registration_form
+        .submit()
+    )
 
-    browser.element('#submit').click()
+    (
+        app
+        .registration_form
+        .should_be_filled(
 
-    # THEN:
-    table_rows = browser.element('.modal-content').all('tr')
-    result = table_rows.should(have.texts(
-        'Label Values',
-        'Student Name Aleksei Torsukov',
-        'Student Email torsukov@gmail.com',
-        'Gender Male',
-        'Mobile 8999666666',
-        'Date of Birth 19 January,2000',
-        'Subjects Maths',
-        'Hobbies Sports',
-        'Picture cat.jpeg',
-        'Address My address',
-        'State and City Uttar Pradesh Lucknow'))
+                    'Label Values',
+            'Student Name Aleksei Torsukov',
+            'Student Email torsukov@gmail.com',
+            'Gender Male',
+            'Mobile 8999123123',
+            'Date of Birth 13 June,2000',
+            'Subjects Maths, Computer Science',
+            'Hobbies Sports, Music',
+            'Picture cat.jpeg',
+            'Address My address',
+            'State and City Uttar Pradesh Lucknow'
+            )
+        )
+
+# OR:
+# def test_register_a_student(browser_management):
+
+    # app.registration_form.open()
+    #
+    # utils.delete_interrupt_elements()
+    #
+    # (
+    #     controls.text_fields
+    #     .type_name(
+    #     browser.element('#firstName'), name='Aleksei')
+    # )
+    #
+    # (
+    #     controls.text_fields.type_lastname(
+    #     browser.element('#lastName'), lastname='Torsukov')
+    # )
+    #
+    # (
+    #     controls.text_fields.type_email(
+    #     browser.element('#userEmail'), email='torsukov@gmail.com')
+    # )
+    #
+    # (
+    #     controls.radiobuttons.enable_gender_radio(
+    #     browser.all('[name=gender]'), gender='Male')
+    # )
+    #
+    # (
+    #     controls.text_fields.type_phone(
+    #     browser.element('#userNumber'), phone='8999123123')
+    # )
+    #
+    # (
+    #     controls.datepickers.select_year_by_click(
+    #     browser.element('#dateOfBirthInput'), year='2000')
+    # )
+    #
+    # (
+    #     controls.datepickers.select_month_by_click(
+    #     browser.element('#dateOfBirthInput'), month_index='5')
+    # )
+    #
+    # (
+    #     controls.datepickers.select_day_by_click(
+    #     browser.element('#dateOfBirthInput'), day='13')
+    # )
+    #
+    # (
+    #     controls.tags_inputs.type_tags(
+    #     browser.element('#subjectsInput'), 'Math', 'Computer Science')  # *tags
+    # )
+    #
+    # (
+    #     controls.checkboxes.enable_hobby_check(
+    #     browser.all('[for^=hobbies-checkbox]'), 'Sports', 'Music')  # *hobbies
+    # )
+    #
+    # (
+    #     controls.upload_a_pictures.upload_avatar(
+    #     browser.element('#uploadPicture'), png_name='cat.jpeg')
+    # )
+    #
+    # (
+    #     controls.text_fields.type_address(
+    #     browser.element('#currentAddress'), address='My address')
+    # )
+    #
+    # (
+    #     controls.dropdowns.select_state_by_click(
+    #     browser.element('#state'), state='Uttar Pradesh')
+    # )
+    #
+    # (
+    #     controls.dropdowns.select_city_by_click(
+    #     browser.element('#city'), city='Lucknow')
+    # )
+    #
+    # (
+    #     controls.buttons.submit(
+    #     browser.element('#submit'))
+    # )
+    #
+    # (
+    #     controls.tables.modal_content_should_have_values(
+    #     browser.element('.modal-content').all('tr'),
+    #
+    #         'Label Values',
+    #         'Student Name Aleksei Torsukov',
+    #         'Student Email torsukov@gmail.com',
+    #         'Gender Male',
+    #         'Mobile 8999123123',
+    #         'Date of Birth 13 June,2000',
+    #         'Subjects Maths, Computer Science',
+    #         'Hobbies Sports, Music',
+    #         'Picture cat.jpeg',
+    #         'Address My address',
+    #         'State and City Uttar Pradesh Lucknow'
+    #     )
+    # )
