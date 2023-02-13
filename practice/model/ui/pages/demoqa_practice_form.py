@@ -1,132 +1,68 @@
 from selene.support.shared import browser
-from practice.model.ui.controls import (
-    buttons,
-    checkboxes,
-    datepickers,
-    dropdowns,
-    radiobuttons,
-    tables,
-    tags_inputs,
-    text_fields,
-    files
-    # ...
-)
+
+from practice.model.ui.controls.text_fields import TextField
+from practice.model.ui.controls.radiobuttons import RadioButton
+from practice.model.ui.controls.datepickers import DatePicker
+from practice.model.ui.controls.tags_inputs import TagsInput
+from practice.model.ui.controls.checkboxes import Checkbox
+from practice.model.ui.controls.files import Avatar
+from practice.model.ui.controls.dropdowns import Dropdown
+from practice.model.ui.controls.buttons import Button
+from practice.model.ui.controls.tables import Table
 
 
 class StudentRegistrationForm:
 
     def open(self):
         browser.open('/automation-practice-form')
-
-
-
-
-
         return self
 
-# def open():
-#     browser.open('/automation-practice-form')
-#
-#
-# def set_name(name):
-#     (
-#         text_fields
-#         .type_name(
-#             browser.element('#firstName'), name)
-#     )
-#
-# def set_lastname(lastname):
-#     (
-#         text_fields.type_lastname(
-#         browser.element('#lastName'), lastname)
-#     )
-#
-# def set_email(email):
-#     (
-#         text_fields.type_email(
-#         browser.element('#userEmail'), email)
-#     )
-#
-# def set_phone(phone):
-#     (
-#         text_fields.type_phone(
-#         browser.element('#userNumber'), phone)
-#     )
-#
-#
-# def set_address(address):
-#     (
-#         text_fields.type_address(
-#         browser.element('#currentAddress'), address)
-#     )
-#
-#
-# def set_gender(gender):
-#     (
-#         radiobuttons.enable_gender_radio(
-#         browser.all('[name=gender]'), gender)
-#     )
-#
-#
-# def set_bdate(day: str, month_index: str, year: str):
-#     (
-#         datepickers.select_year_by_click(
-#         browser.element('#dateOfBirthInput'), year)
-#     )
-#
-#     (
-#         datepickers.select_month_by_click(
-#         browser.element('#dateOfBirthInput'), month_index)
-#     )
-#
-#     (
-#         datepickers.select_day_by_click(
-#         browser.element('#dateOfBirthInput'), day)
-#     )
-#
-# def set_subjects(*tags):
-#     (
-#         tags_inputs.type_tags(
-#         browser.element('#subjectsInput'), *tags)
-#     )
-#
-# def set_hobbies(*hobbies):
-#     (
-#         checkboxes.enable_hobby_check(
-#         browser.all('[for^=hobbies-checkbox]'), *hobbies)  # *hobbies
-#     )
-#
-# def set_avatar(png_name):
-#     (
-#         upload_a_pictures.upload_avatar(
-#         browser.element('#uploadPicture'), png_name)
-#     )
-#
-# def set_birthplace(state, city):
-#     (
-#         dropdowns.select_state_by_click(
-#         browser.element('#state'), state)
-#     )
-#
-#     (
-#         dropdowns.select_city_by_click(
-#         browser.element('#city'), city)
-#     )
-#
-# def submit():
-#     (
-#         buttons.submit(
-#         browser.element('#submit'))
-#     )
+    def set_name(self, firstname, lastname):
+        TextField(browser.element('#firstName')).type_name(firstname)
+        TextField(browser.element('#lastName')).type_lastname(lastname)
+
+    def set_email(self, email):
+        TextField(browser.element('#userEmail')).type_email(email)
+
+    def set_gender(self, gender):
+        RadioButton(browser.all('[name=gender]')).enable_gender_radio(gender)
+
+    def set_phone(self, phone):
+        TextField(browser.element('#userNumber')).type_phone(phone)
+
+    def set_bdate(self, day, month, year):
+        DatePicker(browser.element('#dateOfBirthInput')).select_year_by_click(year)
+        DatePicker(browser.element('#dateOfBirthInput')).select_month_by_click(month)
+        DatePicker(browser.element('#dateOfBirthInput')).select_day_by_click(day)
+
+    def set_subjects(self, *tags):
+        TagsInput(browser.element('#subjectsInput')).type_tags(*tags)
+
+    def set_hobbies(self, *hobbies):
+        Checkbox(browser.all('[for^=hobbies-checkbox]')).enable_hobby_check(*hobbies)
 
 
-def should_be_filled(*texts):
-    (
-        tables.modal_content_should_have_values(
-            browser.element('.modal-content').all('tr'),
+    def set_avatar(self, jpeg_name):
+        Avatar(browser.element('#uploadPicture')).upload_avatar(jpeg_name)
 
-            *texts
 
-        )
-    )
+    def set_address(self, address):
+        TextField(browser.element('#currentAddress')).type_address(address)
+
+    def set_birthplace(self, state, city):
+        Dropdown(browser.element('#state')).select_state_by_click(state)
+        Dropdown(browser.element('#city')).select_city_by_click(city)
+
+
+    def submit(self):
+        Button(browser.element('#submit')).submit_form()
+
+class ModalDialog:
+        def __init__(self):
+            self.element = browser.element('.modal-content')
+            self.table = Table(browser.element('.modal-content').all('tr'))
+
+        def modal_content_should_have_values(self, *values):
+            self.table.table_should_have_values(*values)
+
 

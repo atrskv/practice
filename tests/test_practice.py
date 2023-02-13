@@ -1,110 +1,90 @@
-from selene.support.shared import browser
+# from selene.support.shared import browser
 from practice.utils import utils
 from practice.model import app
-from practice.model import controls
+
+# from practice.model import controls
 
 
 def test_register_a_student(browser_management):
 
-    app.form.open()
+    (
+        app
+        .form
+        .open()
+    )
 
     utils.delete_interrupt_elements()
 
     (
-        controls
-        .TextField(browser.element('#firstName'))
-        .type_name('Aleksei')
+        app
+        .form
+        .set_name('Aleksei', 'Torsukov')
     )
 
     (
-        controls
-        .TextField(browser.element('#lastName'))
-        .type_lastname('Torsukov')
+        app
+        .form
+        .set_email('torsukov@gmail.com')
     )
 
     (
-        controls
-        .TextField(browser.element('#userEmail'))
-        .type_email('torsukov@gmail.com')
+        app
+        .form
+        .set_gender('Male')
     )
 
     (
-        controls
-        .RadioButton(browser.all('[name=gender]'))
-        .enable_gender_radio('Male')
+        app
+        .form
+        .set_phone('8999123123')
     )
 
     (
-        controls
-        .TextField(browser.element('#userNumber'))
-        .type_phone('8999123123')
+        app
+        .form
+        .set_bdate('12', '3', '2000')
     )
 
     (
-        controls
-        .DatePicker(browser.element('#dateOfBirthInput'))
-        .select_year_by_click('2000')
+        app
+        .form
+        .set_subjects('Math', 'Computer Science')
     )
 
     (
-        controls
-        .DatePicker(browser.element('#dateOfBirthInput'))
-        .select_month_by_click('3')
+        app
+        .form
+        .set_hobbies('Sports', 'Music')
     )
 
     (
-        controls
-        .DatePicker(browser.element('#dateOfBirthInput'))
-        .select_day_by_click('12')
+        app
+        .form
+        .set_avatar('cat.jpeg')
     )
 
     (
-        controls
-        .TagsInput(browser.element('#subjectsInput'))
-        .type_tags('Math', 'Computer Science')
+        app
+        .form
+        .set_address('My address')
     )
 
     (
-        controls
-        .Checkbox(browser.all('[for^=hobbies-checkbox]'))
-        .enable_hobby_check('Sports', 'Music')
+        app
+        .form
+        .set_birthplace('Uttar Pradesh', 'Lucknow')
     )
 
     (
-        controls
-        .Avatar(browser.element('#uploadPicture'))
-        .upload_avatar('cat.jpeg')
+        app
+        .form
+        .submit()
     )
 
     (
-        controls
-        .TextField(browser.element('#currentAddress'))
-        .type_address('My address')
-    )
-
-    (
-        controls
-        .Dropdown(browser.element('#state'))
-        .select_state_by_click('Uttar Pradesh')
-    )
-
-    (
-        controls
-        .Dropdown(browser.element('#city'))
-        .select_city_by_click('Lucknow')
-    )
-
-    (
-        controls
-        .Button(browser.element('#submit'))
-        .submit_registration_form()
-    )
-
-    (
-        controls
-        .Table(browser.element('.modal-content')
-        .all('tr'))
-        .table_should_have_values(
+        app
+        .modal_dialog
+        .modal_content_should_have_values(
 
                     'Label Values',
             'Student Name Aleksei Torsukov',
@@ -117,6 +97,58 @@ def test_register_a_student(browser_management):
             'Picture cat.jpeg',
             'Address My address',
             'State and City Uttar Pradesh Lucknow'
-
         )
     )
+
+def test_fill_the_textboxes(browser_management):
+
+    (
+        app
+        .textboxes
+        .open()
+    )
+
+    (
+        app
+        .textboxes
+        .set_full_name('Aleksei Torsukov')
+    )
+
+    (
+        app
+        .textboxes
+        .set_email('torsukov@gmail.com')
+    )
+
+    (
+        app
+        .textboxes
+        .set_current_address('My address')
+    )
+
+    (
+        app
+        .textboxes
+        .set_permanent_address('My permanent_address')
+    )
+
+    (
+        app
+        .textboxes
+        .submit()
+    )
+
+    # THEN:
+    (
+        app
+        .output
+        .should_have_exact_name('Name:Aleksei Torsukov')
+    )
+
+    (
+        app
+        .output
+        .should_have_exact_email('Email:torsukov@gmail.com')
+    )
+
+    # ...
