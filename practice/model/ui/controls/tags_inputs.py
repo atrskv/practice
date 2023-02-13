@@ -1,12 +1,22 @@
-from selene import command
+from selene import command, Element
 
 
-def type_tags(selector, *tags):
-    selector.perform(command.js.scroll_into_view)
-    selector.perform(command.js.click)
+class TagsInput:
+    def __init__(self, element: Element):
+        self.element = element
 
-    for tag in tags:
-        selector.type(tag).press_tab()
+    def type_tags(self, *tags):
+        self.element.perform(command.js.scroll_into_view)
+        self.element.perform(command.js.click)
+
+        for tag in tags:
+            self.element.type(tag).press_tab()
 
 
 
+
+# (
+    #     controls.tags_inputs.type_tags(
+    #     browser.element('#subjectsInput'), 'Math', 'Computer Science')  # *tags
+    # )
+    #

@@ -1,7 +1,12 @@
 from selene import have, Collection
 
 
-def enable_hobby_check(selector: Collection, *hobbies):
+class Checkbox:
 
-    for hobby in hobbies:
-        selector.element_by(have.text(hobby)).click()
+    def __init__(self, all: Collection):
+        self.all = all
+
+    def enable_hobby_check(self, *hobbies):
+
+        for hobby in hobbies:
+            self.all.element_by(have.text(hobby)).click()
