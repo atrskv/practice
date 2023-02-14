@@ -1,6 +1,9 @@
 from selene.support.shared import browser
 
-def delete_interrupt_elements():
+from faker import Faker
+from faker.providers.phone_number import Provider
+
+def delete_interrupt_adds():
 
     '''
     For delete google adds
@@ -18,4 +21,18 @@ def resource(path):
         .parent
         .joinpath(f'practice/resources/{path}')
     )
+
+
+
+from faker import Faker
+
+
+from faker.providers.phone_number import Provider
+
+class RussiaPhoneNumberProvider(Provider):
+
+    def russia_phone_number(self):
+        return f'8{self.msisdn()[4:]}'
+
+
 

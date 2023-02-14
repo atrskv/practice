@@ -5,7 +5,7 @@ class TagsInput:
     def __init__(self, element: Element):
         self.element = element
 
-    def type_tags(self, *tags):
+    def type_tags(self, tags: list):
         self.element.perform(command.js.scroll_into_view)
         self.element.perform(command.js.click)
 
